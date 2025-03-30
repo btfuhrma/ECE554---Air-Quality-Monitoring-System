@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "author": "Brendan Fuhrman",
+    "editor": "wokwi",
+    "parts": [
+      { "type": "wokwi-breadboard", "id": "breadboard", "top": 50, "left": 50, "attrs": {} },
+      {
+        "type": "board-ssd1306",
+        "id": "oled1",
+        "top": -50,
+        "left": -100,
+        "attrs": { "i2cAddress": "0x3c" }
+      },
+      { "type": "wokwi-arduino-uno", "id": "uno", "top": -220.2, "left": 76.2, "attrs": {} },
+      {
+        "type": "wokwi-dht22",
+        "id": "dht22",
+        "top": 100,
+        "left": -50,
+        "attrs": { "sensor": "dht22" }
+      }
+    ],
+    "connections": [
+      [ "uno:5V", "breadboard:tp.13", "red", [ "v0" ] ],
+      [ "uno:GND.2", "breadboard:tn.16", "black", [ "v0" ] ],
+      [ "oled1:VCC", "breadboard:tp.1", "red", [ "v0" ] ],
+      [ "oled1:GND", "breadboard:tn.1", "black", [ "v0" ] ],
+      [ "oled1:SDA", "uno:A4", "green", [ "v0" ] ],
+      [ "oled1:SCL", "uno:A5", "green", [ "v0" ] ],
+      [ "dht22:VCC", "breadboard:tp.2", "red", [ "v0" ] ],
+      [ "dht22:GND", "breadboard:tn.2", "black", [ "v0" ] ],
+      [ "dht22:SDA", "uno:2", "green", [ "v0" ] ]
+    ],
+    "dependencies": {}
+  }
