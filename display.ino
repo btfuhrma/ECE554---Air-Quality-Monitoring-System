@@ -12,6 +12,10 @@
 #include <Adafruit_SSD1306.h>
 #include <time.h>
 #include <stdio.h>
+#include "AirPressure.h"
+#include "AltitudeSensor.h"
+#include "DHTSensor.h"
+#include "GasSensor.h"
 
 //********REPLACE WITH ACTUAL FUNCTION RETURNS FOR SENSOR READINGS AND UNITS********
 #define AIR_QUALITY_THRESHOLD 50.0
@@ -28,6 +32,13 @@
 #define GAS_THRESHOLD_UNITS "UN"
 #define ALTITUDE_THRESHOLD_UNITS "UN"
 //************************************************************************
+#define DHT_PIN 2 // Can change this later if necessary
+#define DHT_TYPE DHT22
+
+DHTSensor dhtSensor(DHT_PIN, DHT_TYPE);
+AirPressureSensor airPressureSensor;
+AltitudeSensor altitudeSensor;
+GasSensor gasSensor;
 
 const int SCREEN_WIDTH = 128; 
 const int SCREEN_HEIGHT = 64; 
@@ -37,6 +48,10 @@ int ledPin = 13;
 
 void setup() {
   Serial.begin(9600);
+  dhtSensor.begin();
+  airPressureSensor.begin();
+  altitudeSensor.begin();
+  gasSensor.begin();
 
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
     Serial.println(F("SSD1306 allocation failed"));
@@ -64,11 +79,11 @@ void setup() {
 void loop() {
   //********REPLACE WITH ACTUAL FUNCTION RETURNS FOR SENSOR READINGS********
   float airQuality = 10.0;
-  float temp = 20.0;
-  float humidity = 30.0;
-  float pressure = 40.0;
-  float gas = 50.0;
-  float altitude = 60.0;
+  float temp = dhtSensor.getTemperature();
+  float humidity = dhtSensor.getHumidity();
+  float pressure = airPressureSensor.getPressure();
+  float gas = gasSensor.getGasConcentration();
+  float altitude = altitudeSensor.getAltitude();
   //************************************************************************
   display.clearDisplay();
   display.setTextSize(1);
