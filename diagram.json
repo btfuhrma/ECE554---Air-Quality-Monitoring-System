@@ -7,23 +7,25 @@
     {
       "type": "board-ssd1306",
       "id": "oled1",
-      "top": -54.46,
-      "left": -95.77,
+      "top": -304.06,
+      "left": -268.57,
       "attrs": { "i2cAddress": "0x3c" }
     },
     { "type": "wokwi-arduino-uno", "id": "uno", "top": -220.2, "left": 76.2, "attrs": {} },
     {
       "type": "wokwi-dht22",
       "id": "dht22",
-      "top": 100,
-      "left": -50,
+      "top": -518.1,
+      "left": -82.2,
       "attrs": { "sensor": "dht22" }
     },
-    { "type": "wokwi-gas-sensor", "id": "gas1", "top": -189.3, "left": 410.2, "attrs": {} },
+    { "type": "wokwi-gas-sensor", "id": "gas1", "top": 165.9, "left": -415.4, "attrs": {} },
+    { "type": "wokwi-analog-potentiometer", "id": "pot1", "top": 50, "left": 200, "attrs": {} },
+    { "type": "wokwi-potentiometer", "id": "pot2", "top": -394.9, "left": 9.4, "attrs": {} },
     {
       "type": "wokwi-lcd1602",
       "id": "lcd1",
-      "top": -348.8,
+      "top": -483.2,
       "left": 389.6,
       "attrs": { "pins": "i2c" }
     }
@@ -45,7 +47,10 @@
     [ "lcd1:GND", "breadboard:tn.25", "black", [ "h0" ] ],
     [ "lcd1:SCL", "uno:A3", "green", [ "h0" ] ],
     [ "lcd1:SDA", "uno:A2", "green", [ "h0" ] ],
-    [ "gas1:DOUT", "uno:0", "green", [ "h0" ] ]
+    [ "gas1:DOUT", "uno:0", "green", [ "h0" ] ],
+    [ "pot2:GND", "breadboard:tn.10", "black", [ "v0" ] ],
+    [ "pot2:SIG", "uno:A0", "green", [ "v0" ] ],
+    [ "pot2:VCC", "breadboard:tp.9", "red", [ "v0" ] ]
   ],
   "dependencies": {}
 }

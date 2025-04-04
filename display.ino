@@ -16,6 +16,7 @@
 #include "AltitudeSensor.h"
 #include "DHTSensor.h"
 #include "GasSensor.h"
+#include "MQ2.h"
 
 //********REPLACE WITH ACTUAL FUNCTION RETURNS FOR SENSOR READINGS AND UNITS********
 #define AIR_QUALITY_THRESHOLD 50.0
@@ -24,6 +25,7 @@
 #define PRESSURE_THRESHOLD 50.0
 #define GAS_THRESHOLD 40.0
 #define ALTITUDE_THRESHOLD 50.0
+#define PPM_THRESHOLD 50.0
 
 #define AIR_QUALITY_THRESHOLD_UNITS "UN"
 #define TEMP_THRESHOLD_UNITS "UN"
@@ -31,6 +33,7 @@
 #define PRESSURE_THRESHOLD_UNITS "UN"
 #define GAS_THRESHOLD_UNITS "UN"
 #define ALTITUDE_THRESHOLD_UNITS "UN"
+#define PARTICULATE_MATTER_THRESHOLD_UNITS "ppm"
 //************************************************************************
 #define DHT_PIN 2 // Can change this later if necessary
 #define DHT_TYPE DHT22
@@ -39,6 +42,7 @@ DHTSensor dhtSensor(DHT_PIN, DHT_TYPE);
 AirPressureSensor airPressureSensor;
 AltitudeSensor altitudeSensor;
 GasSensor gasSensor;
+MQ2 mq2(A0);
 
 const int SCREEN_WIDTH = 128; 
 const int SCREEN_HEIGHT = 64; 
@@ -52,6 +56,7 @@ void setup() {
   airPressureSensor.begin();
   altitudeSensor.begin();
   gasSensor.begin();
+  mq2.begin();
 
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
     Serial.println(F("SSD1306 allocation failed"));
@@ -84,6 +89,7 @@ void loop() {
   float pressure = airPressureSensor.getPressure();
   float gas = gasSensor.getGasConcentration();
   float altitude = altitudeSensor.getAltitude();
+  float gasConcentration = mq2.readGasConcentration();
   //************************************************************************
   display.clearDisplay();
   display.setTextSize(1);
@@ -91,14 +97,15 @@ void loop() {
 
   display.setCursor(0, 0);
 
-  int danger1 = set_display_value("Air Quality", AIR_QUALITY_THRESHOLD_UNITS, airQuality, AIR_QUALITY_THRESHOLD);
+  int danger1 = set_display_value("AirQuality", AIR_QUALITY_THRESHOLD_UNITS, airQuality, AIR_QUALITY_THRESHOLD);
   int danger2 = set_display_value("Temperature", TEMP_THRESHOLD_UNITS, temp, TEMP_THRESHOLD);
   int danger3 = set_display_value("Humidity", HUM_THRESHOLD_UNITS, humidity, HUM_THRESHOLD);
   int danger4 = set_display_value("Pressure", PRESSURE_THRESHOLD_UNITS, pressure, PRESSURE_THRESHOLD);
   int danger5 = set_display_value("Gas", GAS_THRESHOLD_UNITS, gas, GAS_THRESHOLD);
   int danger6 = set_display_value("Altitude", ALTITUDE_THRESHOLD_UNITS, altitude, ALTITUDE_THRESHOLD);
+  int danger7 = set_display_value("Concentration", PARTICULATE_MATTER_THRESHOLD_UNITS, gasConcentration, PPM_THRESHOLD);
 
-  int danger_sum = danger1 + danger2 + danger3 + danger4 + danger5 + danger6;
+  int danger_sum = danger1 + danger2 + danger3 + danger4 + danger5 + danger6 + danger7;
   
   display.setCursor(0, 56);
   display.setTextColor(BLACK, WHITE); // 'inverted' text
