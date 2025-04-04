@@ -35,10 +35,10 @@
  float MQ2::readRs() {
    int val = analogRead(_pin);  // Read analog input
    // Convert analog value to voltage (assuming 5V reference and 10-bit ADC)
-   float voltage = val * (5.0 / 1023.0);
+   float gasConcentration = map(val, 0, 1023, 0, 500);
    // Calculate sensor resistance from voltage divider formula
-   float rs = ((5.0 * _rl) / voltage) - _rl;
-   return rs;
+   gasConcentration += (val % 10) / 100.0;
+   return gasConcentration;
  }
  
  float MQ2::readGasConcentration() {

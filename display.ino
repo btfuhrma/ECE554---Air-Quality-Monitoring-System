@@ -90,6 +90,7 @@ void loop() {
   float gas = gasSensor.getGasConcentration();
   float altitude = altitudeSensor.getAltitude();
   float gasConcentration = mq2.readGasConcentration();
+  Serial.println(gasConcentration);
   //************************************************************************
   display.clearDisplay();
   display.setTextSize(1);
@@ -104,7 +105,6 @@ void loop() {
   int danger5 = set_display_value("Gas", GAS_THRESHOLD_UNITS, gas, GAS_THRESHOLD);
   int danger6 = set_display_value("Altitude", ALTITUDE_THRESHOLD_UNITS, altitude, ALTITUDE_THRESHOLD);
   int danger7 = set_display_value("Concentration", PARTICULATE_MATTER_THRESHOLD_UNITS, gasConcentration, PPM_THRESHOLD);
-
   int danger_sum = danger1 + danger2 + danger3 + danger4 + danger5 + danger6 + danger7;
   
   display.setCursor(0, 56);
