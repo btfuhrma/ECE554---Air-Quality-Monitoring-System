@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "author": "Brendan Fuhrman",
+  "author": "Sidharth Kalyan Ram",
   "editor": "wokwi",
   "parts": [
     { "type": "wokwi-breadboard", "id": "breadboard", "top": 50, "left": 50, "attrs": {} },
@@ -48,9 +48,9 @@
     [ "lcd1:SCL", "uno:A3", "green", [ "h0" ] ],
     [ "lcd1:SDA", "uno:A2", "green", [ "h0" ] ],
     [ "gas1:DOUT", "uno:0", "green", [ "h0" ] ],
-    [ "pot2:GND", "breadboard:tn.10", "black", [ "v0" ] ],
-    [ "pot2:SIG", "uno:A0", "green", [ "v0" ] ],
-    [ "pot2:VCC", "breadboard:tp.9", "red", [ "v0" ] ]
+    [ "pot2:SIG", "uno:A0", "green", [ "v57.6", "h210.8" ] ],
+    [ "pot2:VCC", "uno:5V", "red", [ "v96", "h181.6" ] ],
+    [ "pot2:GND", "uno:GND.2", "black", [ "v86.4", "h201.6" ] ]
   ],
   "dependencies": {}
 }
