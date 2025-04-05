@@ -1,44 +1,57 @@
-/*Pins connection:
-VCC to 5V
-GND	to GND
-SCL	to A5
-SDA	to A4 
-*/
-
-#ifndef AIR_PRESSURE_SENSOR_H
-#define AIR_PRESSURE_SENSOR_H
-
 #include <Wire.h>
+#include <LiquidCrystal_I2C.h>
 
-#define I2C_SENSOR_ADDR 0x76  // Simulated BMP sensor address
+// I2C LCD at address 0x27, 16 columns and 2 rows
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
-class AirPressureSensor {
-public:
-    AirPressureSensor() {}
+void setup() {
+  Serial.begin(9600);
+  Wire.begin();
 
-    // Initialize the sensor
-    void begin() {
-        Wire.begin();
-        // Add any sensor initialization code here if needed
-    }
+  lcd.begin(16, 2);
+  lcd.backlight();
+  lcd.setCursor(0, 0);
+  lcd.print("Air Pressure Mon");
+  delay(2000);
+  lcd.clear();
+}
 
-    // Simulated Temperature
-    float getTemperature() {
-        return 25.0 + (random(-10, 10) / 10.0);  // Generates a random temp near 25°C
-    }
+void loop() {
+  long pressure = getPressure();
 
-    // Simulated Pressure
-    long getPressure() {
-        return 101325 + random(-500, 500);  // Generates random pressure near 101325 Pa
-    }
+  // Serial Output
+  Serial.print("Pressure = ");
+  Serial.print(pressure);
+  Serial.println(" Pa");
+  Serial.println("------------------------");
 
-    // Simulated Altitude
-    float getAltitude() {
-        return 50.0 + (random(-5, 5));  // Generates a random altitude near 50m
-    }
+  // LCD Display: Show Pressure
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Pressure:");
+  lcd.setCursor(0, 1);
+  lcd.print(pressure / 100);  // Convert Pa to hPa
+  lcd.print(" hPa");
+  delay(2000);
 
-private:
-    // If you have any sensor-specific private methods or members, they can go here.
-};
+  // LCD Alert
+  lcd.clear();
+  if (pressure > 102000) {
+    lcd.print("ALERT: High Pres");
+    Serial.println("ALERT: High Pressure!");
+  } else if (pressure < 99000) {
+    lcd.print("ALERT: Low Pres");
+    Serial.println("ALERT: Low Pressure!");
+  } else {
+    lcd.print("Pressure Normal");
+    Serial.println("Pressure Normal");
+  }
 
-#endif
+  Serial.println();
+  delay(2000);
+}
+
+// Simulated Pressure
+long getPressure() {
+  return 101325 + random(-3000, 3000);  // Wider range for faster fluctuation
+}
