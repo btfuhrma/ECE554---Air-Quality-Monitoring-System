@@ -23,7 +23,7 @@
 #define TEMP_THRESHOLD 40.0
 #define HUM_THRESHOLD 50.0
 #define PRESSURE_THRESHOLD 50.0
-#define GAS_THRESHOLD 40.0
+#define GAS_THRESHOLD 50.0
 #define ALTITUDE_THRESHOLD 50.0
 #define PPM_THRESHOLD 50.0
 
@@ -31,7 +31,7 @@
 #define TEMP_THRESHOLD_UNITS "C"
 #define HUM_THRESHOLD_UNITS "UN"
 #define PRESSURE_THRESHOLD_UNITS "UN"
-#define GAS_THRESHOLD_UNITS "UN"
+#define GAS_THRESHOLD_UNITS "ppm"
 #define ALTITUDE_THRESHOLD_UNITS "m"
 #define PARTICULATE_MATTER_THRESHOLD_UNITS "ppm"
 //************************************************************************
