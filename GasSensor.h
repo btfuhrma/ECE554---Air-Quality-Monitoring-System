@@ -1,30 +1,25 @@
-#ifndef GAS_SENSOR_H
-#define GAS_SENSOR_H
+#ifndef GASSENSOR_H
+#define GASSENSOR_H
 
 #include <Arduino.h>
 
-#define MQ2_PIN A0  // Pin connected to MQ2 sensor (analog pin)
-
 class GasSensor {
-public:
-    GasSensor() {}
+  private:
+    int pin;
 
-    // Initialize the MQ2 sensor
+  public:
+    GasSensor(int analogPin = A0) {
+      pin = analogPin;
+    }
+
+    // Setup pin mode
     void begin() {
-        pinMode(MQ2_PIN, INPUT);
-        // Add any additional initialization code here if needed
+      pinMode(pin, INPUT);
     }
 
-    // Read the gas sensor value
-    int readGasLevel() {
-        return analogRead(MQ2_PIN);  // Read the sensor value (0 to 1023)
-    }
-
-    // Simulate gas concentration level (For demonstration purposes)
+    // Simulated gas concentration value in ppm
     float getGasConcentration() {
-        int sensorValue = analogRead(MQ2_PIN);
-        float concentration = map(sensorValue, 0, 1023, 0, 100);  // Map the sensor value to a percentage
-        return concentration;  // Simulated gas concentration in percentage
+      return 50 + random(-20, 20);  // Simulated values between 30–80 ppm
     }
 };
 
