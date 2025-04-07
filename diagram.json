@@ -7,8 +7,8 @@
     {
       "type": "board-ssd1306",
       "id": "oled1",
-      "top": -304.06,
-      "left": -268.57,
+      "top": 79.94,
+      "left": -258.97,
       "attrs": { "i2cAddress": "0x3c" }
     },
     { "type": "wokwi-arduino-uno", "id": "uno", "top": -220.2, "left": 76.2, "attrs": {} },
@@ -28,7 +28,8 @@
       "top": -483.2,
       "left": 389.6,
       "attrs": { "pins": "i2c" }
-    }
+    },
+    { "type": "wokwi-led", "id": "led1", "top": -90, "left": 416.6, "attrs": { "color": "red" } }
   ],
   "connections": [
     [ "uno:5V", "breadboard:tp.13", "red", [ "v0" ] ],
@@ -50,7 +51,9 @@
     [ "gas1:DOUT", "uno:0", "green", [ "h0" ] ],
     [ "pot2:SIG", "uno:A0", "green", [ "v57.6", "h210.8" ] ],
     [ "pot2:VCC", "uno:5V", "red", [ "v96", "h181.6" ] ],
-    [ "pot2:GND", "uno:GND.2", "black", [ "v86.4", "h201.6" ] ]
+    [ "pot2:GND", "uno:GND.2", "black", [ "v86.4", "h201.6" ] ],
+    [ "led1:C", "breadboard:tn.17", "black", [ "v48", "h-153.2", "v72.3" ] ],
+    [ "led1:A", "uno:13", "green", [ "h48", "v-201.6", "h-288.4" ] ]
   ],
   "dependencies": {}
 }
