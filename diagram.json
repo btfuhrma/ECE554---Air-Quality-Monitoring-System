@@ -7,8 +7,8 @@
     {
       "type": "board-ssd1306",
       "id": "oled1",
-      "top": 79.94,
-      "left": -258.97,
+      "top": -304.06,
+      "left": -268.57,
       "attrs": { "i2cAddress": "0x3c" }
     },
     { "type": "wokwi-arduino-uno", "id": "uno", "top": -220.2, "left": 76.2, "attrs": {} },
@@ -20,16 +20,14 @@
       "attrs": { "sensor": "dht22" }
     },
     { "type": "wokwi-gas-sensor", "id": "gas1", "top": 165.9, "left": -415.4, "attrs": {} },
-    { "type": "wokwi-analog-potentiometer", "id": "pot1", "top": 50, "left": 200, "attrs": {} },
-    { "type": "wokwi-potentiometer", "id": "pot2", "top": -394.9, "left": 9.4, "attrs": {} },
+    { "type": "wokwi-potentiometer", "id": "pot1", "top": -394.9, "left": 9.4, "attrs": {} },
     {
       "type": "wokwi-lcd1602",
       "id": "lcd1",
       "top": -483.2,
       "left": 389.6,
       "attrs": { "pins": "i2c" }
-    },
-    { "type": "wokwi-led", "id": "led1", "top": -90, "left": 416.6, "attrs": { "color": "red" } }
+    }
   ],
   "connections": [
     [ "uno:5V", "breadboard:tp.13", "red", [ "v0" ] ],
@@ -43,17 +41,15 @@
     [ "dht22:SDA", "uno:2", "green", [ "v0" ] ],
     [ "gas1:VCC", "breadboard:tp.42", "red", [ "h0" ] ],
     [ "gas1:GND", "breadboard:tn.50", "black", [ "h0" ] ],
-    [ "gas1:AOUT", "uno:A4", "green", [ "h0" ] ],
+    [ "gas1:AOUT", "uno:A1", "green", [ "h0" ] ],
     [ "lcd1:VCC", "breadboard:tp.27", "red", [ "h0" ] ],
     [ "lcd1:GND", "breadboard:tn.25", "black", [ "h0" ] ],
-    [ "lcd1:SCL", "uno:A3", "green", [ "h0" ] ],
-    [ "lcd1:SDA", "uno:A2", "green", [ "h0" ] ],
     [ "gas1:DOUT", "uno:0", "green", [ "h0" ] ],
-    [ "pot2:SIG", "uno:A0", "green", [ "v57.6", "h210.8" ] ],
-    [ "pot2:VCC", "uno:5V", "red", [ "v96", "h181.6" ] ],
-    [ "pot2:GND", "uno:GND.2", "black", [ "v86.4", "h201.6" ] ],
-    [ "led1:C", "breadboard:tn.17", "black", [ "v48", "h-153.2", "v72.3" ] ],
-    [ "led1:A", "uno:13", "green", [ "h48", "v-201.6", "h-288.4" ] ]
+    [ "pot1:GND", "uno:GND.2", "black", [ "v0" ] ],
+    [ "pot1:SIG", "uno:A0", "green", [ "v48", "h210.8" ] ],
+    [ "pot1:VCC", "uno:5V", "red", [ "v19.2", "h152.8" ] ],
+    [ "lcd1:SDA", "uno:A4", "green", [ "h-76.8", "v144.2" ] ],
+    [ "lcd1:SCL", "uno:A5", "green", [ "h-67.2", "v173.1" ] ]
   ],
   "dependencies": {}
 }

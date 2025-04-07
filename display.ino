@@ -8,6 +8,7 @@
 //----------------------
 
 #include <Wire.h>
+#include <LiquidCrystal_I2C.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include <time.h>
@@ -17,6 +18,10 @@
 #include "DHTSensor.h"
 #include "GasSensor.h"
 #include "MQ2.h"
+
+
+// I2C LCD at address 0x27, 16 columns and 2 rows
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 //********REPLACE WITH ACTUAL FUNCTION RETURNS FOR SENSOR READINGS AND UNITS********
 #define AIR_QUALITY_THRESHOLD 50.0
@@ -30,7 +35,7 @@
 #define AIR_QUALITY_THRESHOLD_UNITS "UN"
 #define TEMP_THRESHOLD_UNITS "C"
 #define HUM_THRESHOLD_UNITS "%"
-#define PRESSURE_THRESHOLD_UNITS "UN"
+#define PRESSURE_THRESHOLD_UNITS "bar"
 #define GAS_THRESHOLD_UNITS "ppm"
 #define ALTITUDE_THRESHOLD_UNITS "m"
 #define PARTICULATE_MATTER_THRESHOLD_UNITS "ppm"
@@ -44,8 +49,8 @@ AltitudeSensor altitudeSensor;
 GasSensor gasSensor;
 MQ2 mq2(A0);
 
-const int SCREEN_WIDTH = 128; 
-const int SCREEN_HEIGHT = 64; 
+const int SCREEN_WIDTH = 128;
+const int SCREEN_HEIGHT = 64;
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 int ledPin = 13;
@@ -62,6 +67,14 @@ void setup() {
     Serial.println(F("SSD1306 allocation failed"));
     while(true);
   }
+
+// LCD INIT
+  lcd.begin(16, 2);
+  lcd.backlight();
+  lcd.setCursor(0, 0);
+  lcd.print("Air Pressure:");
+  delay(2000);
+  lcd.clear();
 
   //Led Setup--------------
   pinMode(ledPin, OUTPUT);
@@ -81,6 +94,20 @@ void setup() {
   delay(5000);
 }
 
+void updatePressureOnLCD(float pressureValue) {
+  lcd.setCursor(0, 1); // Position cursor at start of second line
+  lcd.print("                "); // Clear the line (16 spaces)
+  lcd.setCursor(0, 1);
+  lcd.print(pressureValue);
+  lcd.print(" ");
+  lcd.print(PRESSURE_THRESHOLD_UNITS);
+  
+  // Optionally add status indication
+  if (pressureValue > PRESSURE_THRESHOLD) {
+    lcd.print(" !DANGER!");
+  }
+}
+
 void loop() {
   //********REPLACE WITH ACTUAL FUNCTION RETURNS FOR SENSOR READINGS********
   float airQuality = 10.0;
@@ -92,6 +119,9 @@ void loop() {
   float gasConcentration = mq2.readGasConcentration();
   Serial.println(gasConcentration);
   //************************************************************************
+
+  updatePressureOnLCD(pressure);
+
   display.clearDisplay();
   display.setTextSize(1);
   display.setTextColor(WHITE);
@@ -101,12 +131,11 @@ void loop() {
   int danger1 = set_display_value("AirQuality", AIR_QUALITY_THRESHOLD_UNITS, airQuality, AIR_QUALITY_THRESHOLD);
   int danger2 = set_display_value("Temperature", TEMP_THRESHOLD_UNITS, temp, TEMP_THRESHOLD);
   int danger3 = set_display_value("Humidity", HUM_THRESHOLD_UNITS, humidity, HUM_THRESHOLD);
-  int danger4 = set_display_value("Pressure", PRESSURE_THRESHOLD_UNITS, pressure, PRESSURE_THRESHOLD);
+  int danger4 = set_display_value("Concentration", PARTICULATE_MATTER_THRESHOLD_UNITS, gasConcentration, PPM_THRESHOLD);
   int danger5 = set_display_value("Gas", GAS_THRESHOLD_UNITS, gas, GAS_THRESHOLD);
   int danger6 = set_display_value("Altitude", ALTITUDE_THRESHOLD_UNITS, altitude, ALTITUDE_THRESHOLD);
-  int danger7 = set_display_value("Concentration", PARTICULATE_MATTER_THRESHOLD_UNITS, gasConcentration, PPM_THRESHOLD);
-  int danger_sum = danger1 + danger2 + danger3 + danger4 + danger5 + danger6 + danger7;
-  
+  int danger_sum = danger1 + danger2 + danger3 + danger4 + danger5 + danger6;
+
   display.setCursor(0, 56);
   display.setTextColor(BLACK, WHITE); // 'inverted' text
   display.print("WARNINGS :");
@@ -121,7 +150,7 @@ void loop() {
   display.display();
 
   //Make delay for HIGHEST lag needed for sensors
-  delay(3000); //updates every 3 seconds (can increase or decrease this) 
+  delay(3000); //updates every 3 seconds (can increase or decrease this)
 }
 
 int set_display_value(char *sensor, char *units, float sensor_val, float sensor_threshold)

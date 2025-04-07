@@ -37,17 +37,13 @@
    // Convert analog value to voltage (assuming 5V reference and 10-bit ADC)
    float gasConcentration = map(val, 0, 1023, 0, 500);
    // Calculate sensor resistance from voltage divider formula
-   gasConcentration += (val % 10) / 100.0;
    return gasConcentration;
  }
  
  float MQ2::readGasConcentration() {
-   // Read sensor resistance
+   // Read sensor 
    float rs = readRs();
-   // Calculate rs/ro ratio
-   float rsRoRatio = rs / _ro;
-   // Calculate gas concentration in ppm using power function with default parameters
-   return _a * pow(rsRoRatio, _b);
+   return rs;
  }
  
  float MQ2::readSpecificGas(float a, float b) {
