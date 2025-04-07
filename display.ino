@@ -32,7 +32,7 @@
 #define HUM_THRESHOLD_UNITS "UN"
 #define PRESSURE_THRESHOLD_UNITS "UN"
 #define GAS_THRESHOLD_UNITS "UN"
-#define ALTITUDE_THRESHOLD_UNITS "UN"
+#define ALTITUDE_THRESHOLD_UNITS "m"
 #define PARTICULATE_MATTER_THRESHOLD_UNITS "ppm"
 //************************************************************************
 #define DHT_PIN 2 // Can change this later if necessary
